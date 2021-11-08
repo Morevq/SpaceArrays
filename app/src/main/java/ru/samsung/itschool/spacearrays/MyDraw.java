@@ -12,28 +12,31 @@ import android.view.View;
 
 public class MyDraw extends View {
 
-	public MyDraw(Context context, AttributeSet attrs) {
-		super(context, attrs);
+	public MyDraw(Context context) {
+		super(context);
 		makeSky();
 	}
 
 	Paint paint = new Paint();
 	Bitmap rocketImage = BitmapFactory.decodeResource(getResources(), R.drawable.rocket);
-	
-	
-	float xRocket = 300, yRocket = 300;
-	float vxRocket = 0.5f, vyRocket = -0.5f;
+
+
+
+
+	Rocket rocket = new Rocket(300, 300, rocketImage);
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
-		
+
+		// есть
 		drawSky(canvas);
 
-		drawRocket(canvas, xRocket, yRocket, vxRocket, vyRocket);
-		
-		xRocket += vxRocket;
-		yRocket += vyRocket;
-		
+        // НАДО
+		sky.draw(canvas);
+
+		rocket.draw(canvas);
+		rocket.move();
+
 		// Запрос на перерисовку экрана
 		invalidate();
 	}
@@ -72,15 +75,6 @@ public class MyDraw extends View {
 		}   
 	}
 	
-	void drawRocket(Canvas canvas, float x, float y, float vx, float vy)
-	{
-		Matrix matrix = new Matrix();
-		matrix.setScale(0.2f, 0.2f);
-		//Study mathematics, dear young programmer :)  
-		matrix.postRotate((float)Math.toDegrees(Math.atan2(vy, vx)) + 45);
-		matrix.postTranslate(x, y);
-		paint.setAlpha(255);
-		canvas.drawBitmap(rocketImage, matrix, paint);
-	}
+
 	
 }
