@@ -21,9 +21,8 @@ public class MyDraw extends View {
 	Bitmap rocketImage = BitmapFactory.decodeResource(getResources(), R.drawable.rocket);
 
 
-
-
-	Rocket rocket = new Rocket(300, 300, rocketImage);
+	float xRocket = 300, yRocket = 300;
+	float vxRocket = 0.5f, vyRocket = -0.5f;
 	
 	@Override
 	protected void onDraw(Canvas canvas) {
@@ -31,11 +30,14 @@ public class MyDraw extends View {
 		// есть
 		drawSky(canvas);
 
-        // НАДО
-		sky.draw(canvas);
 
-		rocket.draw(canvas);
-		rocket.move();
+		drawRocket(canvas, xRocket, yRocket, vxRocket, vyRocket);
+
+		xRocket += vxRocket;
+		yRocket += vyRocket;
+
+        
+
 
 		// Запрос на перерисовку экрана
 		invalidate();
@@ -75,6 +77,15 @@ public class MyDraw extends View {
 		}   
 	}
 	
-
+	void drawRocket(Canvas canvas, float x, float y, float vx, float vy)
+	{
+		Matrix matrix = new Matrix();
+		matrix.setScale(0.2f, 0.2f);
+		//Study mathematics, dear young programmer :)
+		matrix.postRotate((float)Math.toDegrees(Math.atan2(vy, vx)) + 45);
+		matrix.postTranslate(x, y);
+		paint.setAlpha(255);
+		canvas.drawBitmap(rocketImage, matrix, paint);
+	}
 	
 }
